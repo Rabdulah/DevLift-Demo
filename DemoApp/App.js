@@ -15,7 +15,7 @@
    messagingSenderId: "334251622332"
  };
 
-const firebaseApp = firebase.initializeApp(config);
+ const firebaseApp = firebase.initializeApp(config);
 
  const StatusBar = require('./components/StatusBar');
  const ActionButton = require('./components/ActionButton');
@@ -31,7 +31,10 @@ import {
   Text,
   View,
   ListView,
-  TouchableHighlight
+  TouchableHighlight,
+  Modal,
+  TextInput,
+  Alert
 } from 'react-native';
 
 const instructions = Platform.select({
@@ -48,13 +51,20 @@ export default class App extends Component<Props> {
     super();
     let ds = new ListView.DataSource({rowHasChanged: (row1, row2) => row1 !== row2});
     this.state = {
-      itemDataSource: ds
+      text: '',
+      itemDataSource: ds,
+      modalVisible: false
   }
   //The constructor will init this.itemsRef with the child items via the getref func
   this.itemsRef = this.getRef().child('items');
 
   this.renderRow = this.renderRow.bind(this);
   this.pressRow = this.pressRow.bind(this);
+}
+
+//set the state of the modal to whatever we pass into visible ==> true or false
+setModalVisible(visible){
+  this.setState({modalVisible:visible});
 }
 
 getRef(){ //getref pulls the data from firebase
@@ -67,9 +77,6 @@ getRef(){ //getref pulls the data from firebase
   }
   componentDidMount() {
     this.getItems(this.itemsRef);
-    // this.setState({
-    //   datasource
-    // })
     }
 
     getItems(itemsRef){
@@ -91,7 +98,15 @@ getRef(){ //getref pulls the data from firebase
 
     }
     pressRow(item){
-      console.log(item);
+      //this.itemsRef.child(item._key).remove();
+      Alert.alert(
+  'Delete Grocery?',
+  'Selecting Complete will delete the grocery from your list',
+  [
+    {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+    {text: 'Complete', onPress: () => {this.itemsRef.child(item._key).remove();}},
+  ]
+)
     }
     renderRow(item){
       return(
@@ -104,29 +119,55 @@ getRef(){ //getref pulls the data from firebase
         </TouchableHighlight>
       )
     }
+
+    addItem(){
+this.setModalVisible(true);
+    }
   render() {
     return (
          <View style={styles.container}>
+         <Modal
+   animationType="slide"
+   transparent={false}
+   visible={this.state.modalVisible}
+   onRequestClose={() => {
+
+   }}>
+   <View style={{marginTop: 22}}>
+     <View>
+       <StatusBar title="Add Item"/>
+
+       <TextInput value={this.state.text}
+       placeholder="Add Item"
+       onChangeText = {(value)=> this.setState({text:value})}
+        />
+
+       <TouchableHighlight
+         onPress={() => {
+           this.itemsRef.push({title: this.state.text});
+           this.setModalVisible(!this.state.modalVisible);
+         }}>
+         <Text>Save Item</Text>
+       </TouchableHighlight>
+
+       <TouchableHighlight
+         onPress={() => {
+           this.setModalVisible(!this.state.modalVisible);
+         }}>
+         <Text>Cancel</Text>
+       </TouchableHighlight>
+     </View>
+   </View>
+ </Modal>
 
            <StatusBar title="Grocery List"/>
+            <ListView dataSource={this.state.itemDataSource}
+              renderRow={this.renderRow}
+                style={styles.listview}
+            />
 
-    <ListView dataSource={this.state.itemDataSource}
-           renderRow={this.renderRow}
-            style={styles.listview}/>
-
-
+            <ActionButton onPress={this.addItem.bind(this)} title = "Add Item" />
          </View>
        );
-  }
-}
-
-
-class DemoApp extends Component {
-  render() {
-    return (
-      <View style="{styles.container}">
-      //I'm a container lol!
-      </View>
-    );
   }
 }
