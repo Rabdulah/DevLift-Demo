@@ -3,7 +3,8 @@
  * https://github.com/facebook/react-native
  * @flow
  */
-
+ //import * as firebase from 'firebase';
+import{Firebase} from "./android/app/src/components/Firebase";
 import React, { Component } from 'react';
 import {
   Platform,
@@ -12,6 +13,7 @@ import {
   View
 } from 'react-native';
 
+//var firebase = require('firebase');
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' +
     'Cmd+D or shake for dev menu',
