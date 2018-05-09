@@ -67,6 +67,11 @@ setModalVisible(visible){
   this.setState({modalVisible:visible});
 }
 
+//Need this to clear text after saving or canceling, else textbox keeps old input which is kinda annoying
+clearText(){
+  this.setState({text: ''});
+}
+
 getRef(){ //getref pulls the data from firebase
   return firebaseApp.database().ref();
 }
@@ -143,16 +148,20 @@ this.setModalVisible(true);
         />
 
        <TouchableHighlight
+       style={styles.action}
          onPress={() => {
            this.itemsRef.push({title: this.state.text});
            this.setModalVisible(!this.state.modalVisible);
+           this.clearText();
          }}>
          <Text>Save Item</Text>
        </TouchableHighlight>
 
        <TouchableHighlight
+       style={styles.cancel}
          onPress={() => {
            this.setModalVisible(!this.state.modalVisible);
+           this.clearText();
          }}>
          <Text>Cancel</Text>
        </TouchableHighlight>

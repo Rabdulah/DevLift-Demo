@@ -1,7 +1,8 @@
 const React = require('react-native')
 const {StyleSheet} = React
 const constants = {
-  actionColor: '#24CE84'
+  actionColor: '#24CE84',
+  cancelColor: '#cd5c5c'
 };
 
 var styles = StyleSheet.create({
@@ -57,6 +58,14 @@ var styles = StyleSheet.create({
   },
   action: {
     backgroundColor: constants.actionColor,
+    borderColor: 'transparent',
+    borderWidth: 1,
+    paddingLeft: 16,
+    paddingTop: 14,
+    paddingBottom: 16,
+  },
+  cancel:{
+    backgroundColor: constants.cancelColor,
     borderColor: 'transparent',
     borderWidth: 1,
     paddingLeft: 16,
