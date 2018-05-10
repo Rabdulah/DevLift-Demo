@@ -1,5 +1,5 @@
 {
-  "name": "demoapp",
+  "name": "ChatApp",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -8,8 +8,10 @@
   },
   "dependencies": {
     "firebase": "^5.0.1",
-    "react": "^16.3.1",
-    "react-native": "0.55.3"
+    "react": "16.3.1",
+    "react-native": "0.55.4",
+    "react-native-gifted-chat": "^0.4.3",
+    "react-native-router-flux": "^4.0.0-beta.28"
   },
   "devDependencies": {
     "babel-jest": "22.4.3",
@@ -19,9 +21,5 @@
   },
   "jest": {
     "preset": "react-native"
-  },
-  "main": "index.js",
-  "author": "",
-  "license": "ISC",
-  "description": ""
+  }
 }
